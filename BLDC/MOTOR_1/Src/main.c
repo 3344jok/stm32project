@@ -74,6 +74,10 @@ uint8_t hall_a;
 uint8_t hall_b;
 uint8_t hall_c;
 uint32_t ADC_ConvertedValue[1];
+uint32_t vbuf[1];
+uint32_t Voltage;
+float speed=0;
+uint32_t cnt=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -136,6 +140,7 @@ int main(void)
 	HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_2);
 	HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_3);
 	HAL_ADC_Start(&hadc1);
+	HAL_ADC_Start(&hadc3);
 	
 	HAL_TIM_PWM_Start(&htim8,TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim8,TIM_CHANNEL_2);
@@ -145,8 +150,6 @@ int main(void)
 	STM32_LCD_Init();
 	LCD_Clear(BackColor);
 	LCD_SetTextColor(Blue);
-	LCD_DisplayStringLine(2,"Hello,World!");
-	LCD_DisplayStringLine(4,"STM32F407ZGT6...");
 	ADC_ConvertedValue[0]=MIN;
 
   /* USER CODE END 2 */
@@ -156,25 +159,27 @@ int main(void)
   while (1)
   {	
 		har_status1=HAL_ADC_Start_DMA(&hadc1,(uint32_t*)&ADC_ConvertedValue[0],1);
-		if(state==1){
-			LCD_Draw_NUM(35,200,ADC_ConvertedValue[0]);
-		}
+		har_status2=HAL_ADC_Start_DMA(&hadc1,(uint32_t*)&vbuf[0],1);
+		
 		
 		if(har_status1==HAL_OK){
 			if(ADC_ConvertedValue[0]>MIN){
 				__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_1, ADC_ConvertedValue[0]);
-			__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_2, ADC_ConvertedValue[0]);
-			__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_3, ADC_ConvertedValue[0]);
+				__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_2, ADC_ConvertedValue[0]);
+				__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_3, ADC_ConvertedValue[0]);
 			}
 			else{
 				__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_1, MIN);
-			__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_2, MIN);
-			__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_3, MIN);
+				__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_2, MIN);
+				__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_3, MIN);
 			}
 		}
 		
+		if(har_status2==HAL_OK){
+			Voltage = vbuf[0]*2400*7.32/(7.32+560+560)/4096;
+		}
+		
 		if(HAL_GPIO_ReadPin(KEY_SEL_GPIO_Port,KEY_SEL_Pin)==GPIO_PIN_RESET){
-
 			HAL_Delay(10);
 			if(HAL_GPIO_ReadPin(KEY_SEL_GPIO_Port,KEY_SEL_Pin)==GPIO_PIN_RESET){
 				state=1-state;
@@ -186,6 +191,20 @@ int main(void)
 			}
 		}
 		
+		if(state==1){
+			LCD_DisplayStringLine(0,"RP:");
+			LCD_DisplayStringLine(4,"PWM:");
+			LCD_DisplayStringLine(8,"SPEED:");
+			LCD_DisplayStringLine(12,"VOLTAGE:");
+			LCD_Draw_NUM(0,200,ADC_ConvertedValue[0]);
+			LCD_Draw_NUM(0,200,ADC_ConvertedValue[0]);
+			LCD_Draw_NUM(0,200,speed);
+			LCD_Draw_NUM(0,200,Voltage);
+		}
+		else{
+			LCD_Clear(BackColor);
+			LCD_DisplayStringLine(0,"OFF...");
+		}
 		
 		HAL_Delay(5);
     /* USER CODE END WHILE */
@@ -666,7 +685,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef* htim){
 				TIM8_CH1_OFF; TIM8_CH2_OFF; TIM8_CH3_ON;
 				GPIO_OUT1_OFF; GPIO_OUT2_ON; GPIO_OUT3_OFF;
 			}
-			
+			speed = 60/(cnt*0.001)/3/360;
+			cnt=0;
 	}
 		
 }
@@ -678,7 +698,10 @@ void HAL_TIMEx_BreakCallback(TIM_HandleTypeDef *htim){
 	}
 }
 
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	cnt++;
+}
 
 
 /* USER CODE END 4 */
