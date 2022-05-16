@@ -1,0 +1,27 @@
+--cpu=Cortex-M4.fp.sp
+"exam5\startup_stm32f407xx.o"
+"exam5\main.o"
+"exam5\stm32f4xx_it.o"
+"exam5\stm32f4xx_hal_msp.o"
+"exam5\stm32f4xx_hal_dac.o"
+"exam5\stm32f4xx_hal_dac_ex.o"
+"exam5\stm32f4xx_hal_rcc.o"
+"exam5\stm32f4xx_hal_rcc_ex.o"
+"exam5\stm32f4xx_hal_flash.o"
+"exam5\stm32f4xx_hal_flash_ex.o"
+"exam5\stm32f4xx_hal_flash_ramfunc.o"
+"exam5\stm32f4xx_hal_gpio.o"
+"exam5\stm32f4xx_hal_dma_ex.o"
+"exam5\stm32f4xx_hal_dma.o"
+"exam5\stm32f4xx_hal_pwr.o"
+"exam5\stm32f4xx_hal_pwr_ex.o"
+"exam5\stm32f4xx_hal_cortex.o"
+"exam5\stm32f4xx_hal.o"
+"exam5\stm32f4xx_hal_exti.o"
+"exam5\stm32f4xx_hal_tim.o"
+"exam5\stm32f4xx_hal_tim_ex.o"
+"exam5\system_stm32f4xx.o"
+--strict --scatter "exam5\exam5.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "exam5.map" -o exam5\exam5.axf

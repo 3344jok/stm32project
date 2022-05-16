@@ -1,0 +1,28 @@
+--cpu=Cortex-M4.fp.sp
+"exp12\startup_stm32f407xx.o"
+"exp12\stm32_2.8_lcd.o"
+"exp12\main.o"
+"exp12\stm32f4xx_it.o"
+"exp12\stm32f4xx_hal_msp.o"
+"exp12\stm32f4xx_hal_adc.o"
+"exp12\stm32f4xx_hal_adc_ex.o"
+"exp12\stm32f4xx_hal_rcc.o"
+"exp12\stm32f4xx_hal_rcc_ex.o"
+"exp12\stm32f4xx_hal_flash.o"
+"exp12\stm32f4xx_hal_flash_ex.o"
+"exp12\stm32f4xx_hal_flash_ramfunc.o"
+"exp12\stm32f4xx_hal_gpio.o"
+"exp12\stm32f4xx_hal_dma_ex.o"
+"exp12\stm32f4xx_hal_dma.o"
+"exp12\stm32f4xx_hal_pwr.o"
+"exp12\stm32f4xx_hal_pwr_ex.o"
+"exp12\stm32f4xx_hal_cortex.o"
+"exp12\stm32f4xx_hal.o"
+"exp12\stm32f4xx_hal_exti.o"
+"exp12\stm32f4xx_hal_tim.o"
+"exp12\stm32f4xx_hal_tim_ex.o"
+"exp12\system_stm32f4xx.o"
+--library_type=microlib --strict --scatter "exp12\exp12.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "exp12.map" -o exp12\exp12.axf

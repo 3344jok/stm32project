@@ -1,0 +1,27 @@
+--cpu=Cortex-M4.fp
+"exp9_dma\startup_stm32f407xx.o"
+"exp9_dma\main.o"
+"exp9_dma\gpio.o"
+"exp9_dma\dma.o"
+"exp9_dma\stm32f4xx_it.o"
+"exp9_dma\stm32f4xx_hal_msp.o"
+"exp9_dma\stm32f4xx_hal_tim.o"
+"exp9_dma\stm32f4xx_hal_tim_ex.o"
+"exp9_dma\stm32f4xx_hal_rcc.o"
+"exp9_dma\stm32f4xx_hal_rcc_ex.o"
+"exp9_dma\stm32f4xx_hal_flash.o"
+"exp9_dma\stm32f4xx_hal_flash_ex.o"
+"exp9_dma\stm32f4xx_hal_flash_ramfunc.o"
+"exp9_dma\stm32f4xx_hal_gpio.o"
+"exp9_dma\stm32f4xx_hal_dma_ex.o"
+"exp9_dma\stm32f4xx_hal_dma.o"
+"exp9_dma\stm32f4xx_hal_pwr.o"
+"exp9_dma\stm32f4xx_hal_pwr_ex.o"
+"exp9_dma\stm32f4xx_hal_cortex.o"
+"exp9_dma\stm32f4xx_hal.o"
+"exp9_dma\stm32f4xx_hal_exti.o"
+"exp9_dma\system_stm32f4xx.o"
+--library_type=microlib --strict --scatter "exp9_DMA\exp9_DMA.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "exp9_DMA.map" -o exp9_DMA\exp9_DMA.axf

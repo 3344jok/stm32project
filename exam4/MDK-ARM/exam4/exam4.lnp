@@ -1,0 +1,25 @@
+--cpu=Cortex-M4.fp.sp
+"exam4\startup_stm32f407xx.o"
+"exam4\main.o"
+"exam4\stm32f4xx_it.o"
+"exam4\stm32f4xx_hal_msp.o"
+"exam4\stm32f4xx_hal_tim.o"
+"exam4\stm32f4xx_hal_tim_ex.o"
+"exam4\stm32f4xx_hal_rcc.o"
+"exam4\stm32f4xx_hal_rcc_ex.o"
+"exam4\stm32f4xx_hal_flash.o"
+"exam4\stm32f4xx_hal_flash_ex.o"
+"exam4\stm32f4xx_hal_flash_ramfunc.o"
+"exam4\stm32f4xx_hal_gpio.o"
+"exam4\stm32f4xx_hal_dma_ex.o"
+"exam4\stm32f4xx_hal_dma.o"
+"exam4\stm32f4xx_hal_pwr.o"
+"exam4\stm32f4xx_hal_pwr_ex.o"
+"exam4\stm32f4xx_hal_cortex.o"
+"exam4\stm32f4xx_hal.o"
+"exam4\stm32f4xx_hal_exti.o"
+"exam4\system_stm32f4xx.o"
+--strict --scatter "exam4\exam4.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "exam4.map" -o exam4\exam4.axf
