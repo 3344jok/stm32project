@@ -817,16 +817,24 @@ void LCD_Draw_NUM(u8 Xpos, u16 Ypos, u32 da )
 {
   u8 x;
   //da=12345;
-  x=da/10000;  
-  LCD_DisplayChar(Xpos,320-Ypos,x+0x30);	 
-  x=da/1000%10;
-  LCD_DisplayChar(Xpos,320-(Ypos-16),x+0x30);
-  x=da/100%10;
-  LCD_DisplayChar(Xpos,320-(Ypos-32),x+0x30);
-  x=da/10%10;
-  LCD_DisplayChar(Xpos,320-(Ypos-48),x+0x30);
   x=da%10;
-  LCD_DisplayChar(Xpos,320-(Ypos-64),x+0x30);	  
+  LCD_DisplayChar(Xpos,320-(Ypos-64),x+0x30);	
+	da/=10;
+	if(da==0)return;
+	x=da%10;
+  LCD_DisplayChar(Xpos,320-(Ypos-48),x+0x30);  
+	da/=10;
+	if(da==0)return;
+	x=da%10;
+  LCD_DisplayChar(Xpos,320-(Ypos-32),x+0x30);
+	da/=10;
+	if(da==0)return;
+	x=da%10;
+  LCD_DisplayChar(Xpos,320-(Ypos-16),x+0x30);
+	da/=10;
+	if(da==0)return;
+	x=da%10;
+  LCD_DisplayChar(Xpos,320-Ypos,x+0x30);	
 }
 
 void LCD_ShowNum(uint8_t x,uint16_t y,uint16_t data)
