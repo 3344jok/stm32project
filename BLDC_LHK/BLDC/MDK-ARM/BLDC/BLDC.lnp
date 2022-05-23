@@ -1,0 +1,28 @@
+--cpu=Cortex-M4.fp.sp
+"bldc\startup_stm32f407xx.o"
+"bldc\stm32_2.8_lcd.o"
+"bldc\main.o"
+"bldc\stm32f4xx_it.o"
+"bldc\stm32f4xx_hal_msp.o"
+"bldc\stm32f4xx_hal_adc.o"
+"bldc\stm32f4xx_hal_adc_ex.o"
+"bldc\stm32f4xx_hal_rcc.o"
+"bldc\stm32f4xx_hal_rcc_ex.o"
+"bldc\stm32f4xx_hal_flash.o"
+"bldc\stm32f4xx_hal_flash_ex.o"
+"bldc\stm32f4xx_hal_flash_ramfunc.o"
+"bldc\stm32f4xx_hal_gpio.o"
+"bldc\stm32f4xx_hal_dma_ex.o"
+"bldc\stm32f4xx_hal_dma.o"
+"bldc\stm32f4xx_hal_pwr.o"
+"bldc\stm32f4xx_hal_pwr_ex.o"
+"bldc\stm32f4xx_hal_cortex.o"
+"bldc\stm32f4xx_hal.o"
+"bldc\stm32f4xx_hal_exti.o"
+"bldc\stm32f4xx_hal_tim.o"
+"bldc\stm32f4xx_hal_tim_ex.o"
+"bldc\system_stm32f4xx.o"
+--library_type=microlib --strict --scatter "BLDC\BLDC.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "BLDC.map" -o BLDC\BLDC.axf
