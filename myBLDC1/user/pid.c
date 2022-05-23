@@ -1,12 +1,13 @@
 #include "pid.h"
 
 
-#define Kp 0
-#define Ki 0
-#define Kd 0
+#define Kp 10
+#define Ki 5
+#define Kd 10
 #define T 0.001
 #define MAX_I 200.0
 #define MIN_I -200.0
+#define MAX_SPEED 34
 
 int PWM_u=0;
 double u;
@@ -33,7 +34,7 @@ void cal_u(void){
 }
 
 void cal_r(void){
-	r=32*ADC_ConvertedValue/4096;
+	r=MAX_SPEED*ADC_ConvertedValue/4096;
 }
 
 void cal_PWM_r(){

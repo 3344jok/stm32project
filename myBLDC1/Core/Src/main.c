@@ -203,7 +203,6 @@ int main(void)
 		har_status2=HAL_ADC_Start_DMA(&hadc1,&vbuf,1);
 		if(har_status2==HAL_OK){
 			Voltage =vbuf/4096.0f*3300.0f/RV1*(RV1+RV2);
-//			Voltage = ((float)vbuf/4095*3.3/7.32*(560*2+7.32));
 		}
 		
 		if(HAL_GPIO_ReadPin(KEY_SEL_GPIO_Port,KEY_SEL_Pin)==GPIO_PIN_RESET){
@@ -218,13 +217,15 @@ int main(void)
 			}
 		}
 		
+		printf("%f,%f\r\n",r,y);
 		
-		if(k==500){
+		if(k==50){
 			LCD_Draw_NUM(20,200,ADC_ConvertedValue);
 			LCD_Draw_NUM(70,200,ADC_ConvertedValue*100/8400);
 			LCD_Draw_NUM(120,200,r);
 			LCD_Draw_NUM(170,200,speed);
 			LCD_Draw_NUM(220,200,Voltage);
+			
 			k=0;
 		}
 		else{
@@ -232,8 +233,6 @@ int main(void)
 		}
 		
 			
-//			HAL_Delay(10);
-//		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -747,8 +746,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef* htim){
 			
 		}
 		tim2cnt++;
-		if(tim2cnt==20){
-			float t=(float)cnt/20;
+		if(tim2cnt==50){
+			float t=(float)cnt/50;
 			speed = 24/t;
 			cnt=0;
 			tim2cnt=0;
@@ -778,7 +777,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			cal_PWM_r();
 			cal_y();
 			
-			printf("%f,%f\r\n",r,y);
+//			printf("%f,%f\r\n",r,y);
 			
 			cal_e();
 			cal_p();
