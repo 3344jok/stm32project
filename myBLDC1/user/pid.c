@@ -1,12 +1,18 @@
 #include "pid.h"
 
-
-#define Kp 10
-#define Ki 5
-#define Kd 10
+///**5.26**/
+//#define Kp 100
+//#define Ki 4.5
+//#define Kd 5
+//#define T 0.001
+//#define MAX_ABS 700.0
+#define Kp 100
+#define Ki 4.5
+#define Kd 5
 #define T 0.001
-#define MAX_I 200.0
-#define MIN_I -200.0
+#define MAX_ABS 700.0
+#define MAX_I MAX_ABS
+#define MIN_I -MAX_ABS
 #define MAX_SPEED 34
 
 int PWM_u=0;
@@ -21,7 +27,7 @@ double y;
 
 
 void cal_PWM_u(void){
-	PWM_u=PWM_r+(int)u;
+	PWM_u=(uint32_t)u;
 	if(PWM_u<0){
 		PWM_u=0;
 	}

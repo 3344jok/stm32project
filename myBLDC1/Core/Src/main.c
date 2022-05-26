@@ -219,7 +219,7 @@ int main(void)
 		
 		printf("%f,%f\r\n",r,y);
 		
-		if(k==50){
+		if(k==20){
 			LCD_Draw_NUM(20,200,ADC_ConvertedValue);
 			LCD_Draw_NUM(70,200,ADC_ConvertedValue*100/8400);
 			LCD_Draw_NUM(120,200,r);
