@@ -37,6 +37,7 @@ extern double d;
 extern float speed;
 extern double y;
 extern uint32_t ADC_ConvertedValue;
+extern uint8_t state;
 
 extern void cal_PWM_u(void);
 extern void cal_PWM_r(void);

@@ -5,11 +5,10 @@
 //#define Ki 4.5
 //#define Kd 5
 //#define T 0.001
-//#define MAX_ABS 700.0
-#define Kp 100
-#define Ki 4.5
-#define Kd 5
-#define T 0.001
+//#define MAX_ABS 450.0
+#define Kp 150
+#define Ki 5
+#define Kd 0
 #define MAX_ABS 700.0
 #define MAX_I MAX_ABS
 #define MIN_I -MAX_ABS

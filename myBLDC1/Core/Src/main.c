@@ -50,8 +50,8 @@
 #define GPIO_OUT3_ON HAL_GPIO_WritePin(WL_GPIO_Port,WL_Pin,GPIO_PIN_SET);
 #define GPIO_OUT3_OFF HAL_GPIO_WritePin(WL_GPIO_Port,WL_Pin,GPIO_PIN_RESET);
 
-#define MIN 100
-#define T 	50
+#define MIN 0
+#define T 	10
 
 /* USER CODE END PD */
 
@@ -216,6 +216,11 @@ int main(void)
 				}
 			}
 		}
+		
+//		if(state==1)
+//		printf("%d,%d\r\n",ADC_ConvertedValue,PWM_u);
+//		else 
+//		printf("%d,%d\r\n",ADC_ConvertedValue,0);
 		
 		printf("%f,%f\r\n",r,y);
 		
@@ -746,8 +751,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef* htim){
 			
 		}
 		tim2cnt++;
-		if(tim2cnt==50){
-			float t=(float)cnt/50;
+		if(tim2cnt==15){
+			float t=(float)cnt/15;
 			speed = 24/t;
 			cnt=0;
 			tim2cnt=0;
