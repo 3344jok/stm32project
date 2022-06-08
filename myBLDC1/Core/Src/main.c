@@ -150,12 +150,10 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 	
-	/*****************add********************/
+	/*******初始化操作******/
 	
 	HAL_NVIC_DisableIRQ(DMA2_Stream0_IRQn);
 	__HAL_TIM_ENABLE_IT(&htim8,TIM_IT_BREAK);
-	
-	/****************************************/
 	
 	HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_1);
 	HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_2);
@@ -185,8 +183,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {	
+		//读取adc3的值，得到电位器数值
 		har_status1=HAL_ADC_Start_DMA(&hadc3,&ADC_ConvertedValue,1);
 		
+		//根据PID控制器输出设置PWM占空比
 		if(har_status1==HAL_OK){
 			if(ADC_ConvertedValue>MIN){
 				__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_1, PWM_u);
@@ -200,15 +200,21 @@ int main(void)
 			}
 		}
 		
+		//读取adc1的值，得到母线电压原始数据
 		har_status2=HAL_ADC_Start_DMA(&hadc1,&vbuf,1);
+		//根据原始数据计算母线电压的值
 		if(har_status2==HAL_OK){
 			Voltage =vbuf/4096.0f*3300.0f/RV1*(RV1+RV2);
 		}
 		
+		//检测按键是否按下
 		if(HAL_GPIO_ReadPin(KEY_SEL_GPIO_Port,KEY_SEL_Pin)==GPIO_PIN_RESET){
+			//按键消抖
 			HAL_Delay(5);
 			if(HAL_GPIO_ReadPin(KEY_SEL_GPIO_Port,KEY_SEL_Pin)==GPIO_PIN_RESET){
+				//改变电机的启停状态
 				state=1-state;
+				//状态为1，启动电机
 				if(state==1){
 					HAL_TIM_IC_CaptureCallback(&htim2);
 					HAL_Delay(5);
@@ -217,19 +223,16 @@ int main(void)
 			}
 		}
 		
-//		if(state==1)
-//		printf("%d,%d\r\n",ADC_ConvertedValue,PWM_u);
-//		else 
-//		printf("%d,%d\r\n",ADC_ConvertedValue,0);
-		
+		//向上位机发送期望速度和实际速度
 		printf("%f,%f\r\n",r,y);
 		
+		//每进入main循环500次，更新LCD显示内容
 		if(k==20){
-			LCD_Draw_NUM(20,200,ADC_ConvertedValue);
-			LCD_Draw_NUM(70,200,ADC_ConvertedValue*100/8400);
-			LCD_Draw_NUM(120,200,r);
-			LCD_Draw_NUM(170,200,speed);
-			LCD_Draw_NUM(220,200,Voltage);
+			LCD_Draw_NUM(20,200,ADC_ConvertedValue);//显示电位器的值
+			LCD_Draw_NUM(70,200,PWM_u*100/8400);//显示占空比
+			LCD_Draw_NUM(120,200,r);//显示期望速度
+			LCD_Draw_NUM(170,200,speed);//显示实际速度
+			LCD_Draw_NUM(220,200,Voltage);//显示母线电压
 			
 			k=0;
 		}
@@ -771,24 +774,33 @@ void HAL_TIMEx_BreakCallback(TIM_HandleTypeDef *htim){
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(TIM3==htim->Instance){
+		//计算霍尔元件电位变化时间间隔
 		cnt++;
+		//当时间间隔过大时，认为此时的电机速度为0
 		if(cnt>800)speed=0.0;
 		
 		pid_cnt++;
+		//到达采样周期时，进行PID输出的计算
 		if(pid_cnt==T){
 			pid_cnt=0;
 			
+			//计算期望的速度
 			cal_r();
+			//计算期望的PWM输出
 			cal_PWM_r();
+			//计算实际速度
 			cal_y();
-			
-//			printf("%f,%f\r\n",r,y);
-			
+			//计算误差
 			cal_e();
+			//计算比例部分
 			cal_p();
+			//计算积分部分
 			cal_i();
+			//计算微分部分
 			cal_d();
+			//计算PID输出
 			cal_u();
+			//计算PWM输出
 			cal_PWM_u();
 		}
 	}

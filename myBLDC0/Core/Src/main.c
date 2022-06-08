@@ -142,12 +142,10 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 	
-	/*****************add********************/
-	
+	/*******初始化操作******/
 	HAL_NVIC_DisableIRQ(DMA2_Stream0_IRQn);
 	__HAL_TIM_ENABLE_IT(&htim8,TIM_IT_BREAK);
 	
-	/****************************************/
 	
 	HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_1);
 	HAL_TIM_IC_Start_IT(&htim2,TIM_CHANNEL_2);
@@ -176,8 +174,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {	
+		//读取adc3的值，得到电位器数值
 		har_status1=HAL_ADC_Start_DMA(&hadc3,&ADC_ConvertedValue,1);
 		
+		//根据电位器的电压设置PWM占空比
 		if(har_status1==HAL_OK){
 			if(ADC_ConvertedValue>MIN){
 				__HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_1, ADC_ConvertedValue);
@@ -191,16 +191,21 @@ int main(void)
 			}
 		}
 		
+		//读取adc1的值，得到母线电压原始数据
 		har_status2=HAL_ADC_Start_DMA(&hadc1,&vbuf,1);
+		//根据原始数据计算母线电压的值
 		if(har_status2==HAL_OK){
 			Voltage =vbuf/4096.0f*3300.0f/RV1*(RV1+RV2);
-//			Voltage = ((float)vbuf/4095*3.3/7.32*(560*2+7.32));
 		}
 		
+		//检测按键是否按下
 		if(HAL_GPIO_ReadPin(KEY_SEL_GPIO_Port,KEY_SEL_Pin)==GPIO_PIN_RESET){
+			//按键消抖
 			HAL_Delay(5);
 			if(HAL_GPIO_ReadPin(KEY_SEL_GPIO_Port,KEY_SEL_Pin)==GPIO_PIN_RESET){
+				//改变电机的启停状态
 				state=1-state;
+				//状态为1，启动电机
 				if(state==1){
 					HAL_TIM_IC_CaptureCallback(&htim2);
 					HAL_Delay(5);
@@ -209,12 +214,12 @@ int main(void)
 			}
 		}
 		
-		
+		//每进入main循环500次，更新LCD显示内容
 		if(i==500){
-			LCD_Draw_NUM(20,200,ADC_ConvertedValue);
-			LCD_Draw_NUM(70,200,ADC_ConvertedValue*100/8400);
-			LCD_Draw_NUM(120,200,speed);
-			LCD_Draw_NUM(170,200,Voltage);
+			LCD_Draw_NUM(20,200,ADC_ConvertedValue);//电位器的值
+			LCD_Draw_NUM(70,200,ADC_ConvertedValue*100/8400);//显示PWM波占空比
+			LCD_Draw_NUM(120,200,speed);//显示速度
+			LCD_Draw_NUM(170,200,Voltage);//显示母线电压
 			i=0;
 		}
 		else{
@@ -222,8 +227,6 @@ int main(void)
 		}
 		
 			
-//			HAL_Delay(10);
-//		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -681,12 +684,14 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef* htim){
 	//PA15 a
 	//PB3  b
 	//PB10 c
+	//状态为0，关闭电机
 	if(state==0){
 		TIM8_CH1_OFF; TIM8_CH2_OFF; TIM8_CH3_OFF;
   GPIO_OUT1_OFF; GPIO_OUT2_OFF; GPIO_OUT3_OFF;
 		return;
 	}
 	if(TIM2==htim->Instance){
+		//检测霍尔元件的电位
 		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_10)==GPIO_PIN_SET){
 			hall_c=1;
 		}
@@ -705,6 +710,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef* htim){
 		else{
 			hall_a=0;
 		}
+		//根据霍尔元件电位改变输出，从而换相
 		if(hall_a==1 & hall_b==0 & hall_c==1)
 		{
 			TIM8_CH1_ON; TIM8_CH2_OFF; TIM8_CH3_OFF;
@@ -736,6 +742,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef* htim){
 			GPIO_OUT1_OFF; GPIO_OUT2_ON; GPIO_OUT3_OFF;
 			
 		}
+		
+		//计算电机速度
 		tim2cnt++;
 		if(tim2cnt==20){
 			float t=(float)cnt/20;
@@ -744,8 +752,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef* htim){
 			tim2cnt=0;
 		}
 	}
-		
 }
+
 void HAL_TIMEx_BreakCallback(TIM_HandleTypeDef *htim){
 	if(htim->Instance==TIM8){
 		TIM8_CH1_OFF; TIM8_CH2_OFF; TIM8_CH3_OFF;
