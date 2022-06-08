@@ -1,9 +1,10 @@
 #ifndef   __USER_H__
 #define   __USER_H__
   //代码部分
-	#include "main.h"
+#include "main.h"
 #include <stdio.h>
 #include <string.h>
+#include "motorcontrol.h"
 
 extern UART_HandleTypeDef huart5;
 extern uint8_t find_home_flag;

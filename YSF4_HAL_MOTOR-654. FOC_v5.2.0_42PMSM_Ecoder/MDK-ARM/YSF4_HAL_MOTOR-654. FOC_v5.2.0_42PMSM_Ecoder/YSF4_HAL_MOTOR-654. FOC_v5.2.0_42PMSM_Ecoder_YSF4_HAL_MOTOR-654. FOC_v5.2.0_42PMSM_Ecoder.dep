@@ -1,7 +1,7 @@
 Dependencies for Project 'YSF4_HAL_MOTOR-654. FOC_v5.2.0_42PMSM_Ecoder', Target 'YSF4_HAL_MOTOR-654. FOC_v5.2.0_42PMSM_Ecoder': (DO NOT MODIFY !)
 CompilerVersion: 5060183::V5.06 update 2 (build 183)::ARMCC
 F (startup_stm32f417xx.s)(0x62A01ABE)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_YSF4_HAL_MOTOR-654._FOC_v5.2.0_42PMSM_Ecoder-IC:\Users\z\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\z\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include--pd "__UVISION_VERSION SETA 529" --pd "_RTE_ SETA 1" --pd "STM32F417xx SETA 1"--list startup_stm32f417xx.lst --xref -o "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\startup_stm32f417xx.o" --depend "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\startup_stm32f417xx.d")
-F (../Src/main.c)(0x62A06711)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/F4xx/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/UILibrary/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/SystemDriveParams -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\Src-I.\RTE\_YSF4_HAL_MOTOR-654._FOC_v5.2.0_42PMSM_Ecoder-IC:\Users\z\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\z\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="529" -D_RTE_ -DSTM32F417xx -DARM_MATH_CM4 -DUSE_HAL_DRIVER -DSTM32F417xx-o "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o" --omf_browse "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.crf" --depend "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.d")
+F (../Src/main.c)(0x62A0682E)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/F4xx/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/UILibrary/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/SystemDriveParams -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\Src-I.\RTE\_YSF4_HAL_MOTOR-654._FOC_v5.2.0_42PMSM_Ecoder-IC:\Users\z\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\z\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="529" -D_RTE_ -DSTM32F417xx -DARM_MATH_CM4 -DUSE_HAL_DRIVER -DSTM32F417xx-o "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o" --omf_browse "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.crf" --depend "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.d")
 I (../Inc/main.h)(0x62A01ABB)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x60E9684C)
 I (../Inc/stm32f4xx_hal_conf.h)(0x62A01ABB)
@@ -37,6 +37,10 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x60E9684C)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x60E9684C)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x60E9684C)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x60E9684C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x56FE42DE)
+I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x56FE42D6)
+I (../Src/user.h)(0x62A0682E)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x56FE42DE)
 I (../Inc/motorcontrol.h)(0x62A01AB8)
 I (../Inc/parameters_conversion.h)(0x62A01AB9)
 I (../Inc/pmsm_motor_parameters.h)(0x62A01AB9)
@@ -61,10 +65,6 @@ I (../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc/state_machine.h)(0x5B62
 I (../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc/speed_torq_ctrl.h)(0x5B62E26A)
 I (../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc/pid_regulator.h)(0x5B62E26A)
 I (../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc/speed_pos_fdbk.h)(0x5B62E26A)
-I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x56FE42DE)
-I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x56FE42D6)
-I (../Src/user.h)(0x62A058D7)
-I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x56FE42DE)
 F (../Src/motorcontrol.c)(0x62A01AB7)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/F4xx/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/UILibrary/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/SystemDriveParams -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\Src-I.\RTE\_YSF4_HAL_MOTOR-654._FOC_v5.2.0_42PMSM_Ecoder-IC:\Users\z\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\z\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="529" -D_RTE_ -DSTM32F417xx -DARM_MATH_CM4 -DUSE_HAL_DRIVER -DSTM32F417xx-o "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\motorcontrol.o" --omf_browse "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\motorcontrol.crf" --depend "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\motorcontrol.d")
 I (../Inc/main.h)(0x62A01ABB)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x60E9684C)
@@ -991,7 +991,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x60E9684C)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x60E9684C)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x60E9684C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x56FE42DE)
-F (..\Src\user.h)(0x62A058D7)()
+F (..\Src\user.h)(0x62A0682E)()
 F (../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c)(0x60E9684C)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 -Otime --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/F4xx/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/UILibrary/Inc -I ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/SystemDriveParams -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ..\Src-I.\RTE\_YSF4_HAL_MOTOR-654._FOC_v5.2.0_42PMSM_Ecoder-IC:\Users\z\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\z\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="529" -D_RTE_ -DSTM32F417xx -DARM_MATH_CM4 -DUSE_HAL_DRIVER -DSTM32F417xx-o "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\stm32f4xx_hal_adc.o" --omf_browse "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\stm32f4xx_hal_adc.crf" --depend "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\stm32f4xx_hal_adc.d")
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x60E9684C)
 I (../Inc/stm32f4xx_hal_conf.h)(0x62A01ABB)

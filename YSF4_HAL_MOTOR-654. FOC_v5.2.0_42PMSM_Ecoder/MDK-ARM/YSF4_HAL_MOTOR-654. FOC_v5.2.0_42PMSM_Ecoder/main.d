@@ -35,6 +35,10 @@ ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Drivers/STM32F4xx_HAL_Dr
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Src/user.h
+ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Inc/motorcontrol.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Inc/parameters_conversion.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Inc/pmsm_motor_parameters.h
@@ -59,7 +63,3 @@ ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../MCSDK_v5.2.0-Full/MotorC
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc/speed_torq_ctrl.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc/pid_regulator.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../MCSDK_v5.2.0-Full/MotorControl/MCSDK/MCLib/Any/Inc/speed_pos_fdbk.h
-ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Src/user.h
-ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

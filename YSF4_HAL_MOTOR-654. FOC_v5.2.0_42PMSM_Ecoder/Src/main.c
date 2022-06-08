@@ -20,7 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "motorcontrol.h"
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -203,7 +203,7 @@ int main(void)
 			}
 			case 5:{
 				if(abs(pos-mid)<5){
-					state=0;
+					state++;
 					MC_ProgramSpeedRampMotor1(0,0);
 					MC_StartMotor1();
 					find_home_flag=1;
@@ -211,6 +211,7 @@ int main(void)
 				break;
 			}
 			case 6:{
+				
 				break;
 			}
 		}
