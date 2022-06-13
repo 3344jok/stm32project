@@ -458,9 +458,14 @@
               <FilePath>../Src/stm32f4xx_hal_msp.c</FilePath>
             </File>
             <File>
-              <FileName>user.h</FileName>
+              <FileName>sweep.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\sweep.c</FilePath>
+            </File>
+            <File>
+              <FileName>sweep.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\user.h</FilePath>
+              <FilePath>..\Src\sweep.h</FilePath>
             </File>
           </Files>
         </Group>

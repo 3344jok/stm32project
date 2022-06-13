@@ -37,7 +37,7 @@ ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Drivers/STM32F4xx_HAL_Dr
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Src/user.h
+ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Src/sweep.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Inc/motorcontrol.h
 ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\main.o: ../Inc/parameters_conversion.h

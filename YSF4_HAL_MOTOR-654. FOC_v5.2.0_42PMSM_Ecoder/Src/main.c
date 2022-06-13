@@ -25,8 +25,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
-#include "math.h"
-#include "user.h"
+#include <math.h>
+#include "sweep.h"
+#include "motorcontrol.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -84,6 +85,234 @@ static void MX_TIM8_Init(void);
 static void MX_UART5_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_NVIC_Init(void);
+/*实现扫频辨识功能，该功能将被放置在 main 函数的 while(1)中运行*/ 
+void function_sweep_identification(void)
+{
+	static my_sweep_t sweep = {0};
+	int16_t sweep_input = 0;
+	int16_t sweep_output = 0; 
+	uint32_t sys_tick = 0; 
+	static uint32_t init_flag = 0; 
+	static uint32_t last_sys_tick = 0; 
+	static uint32_t start_sys_tick = 0;
+	// 频率在 10s 内 ，从 0.5hz 变化到 10hz，幅度为 1500 digit current 
+	uint32_t t_period_ms = 10*1000; //10s
+	float f0 = 0.5; 
+	float f1 = 10; 
+	float Amp = 1500.0f; 
+	
+	float time = 0.0f; 
+	sys_tick = HAL_GetTick(); //获取当前时刻，单位 ms
+	time = 0.001f * sys_tick; //单位 s
+	
+	/*进入的条件时回零成功，且按了 K1 运行键, 就开始执行扫频辨识过程, 注意 find_home_flag 是回零成功的标志位，是一个全局变量,需要在外部实现这个标志位*/
+	if ((find_home_flag == 1) && (MC_GetSTMStateMotor1() == RUN))
+	{
+		if (last_sys_tick != sys_tick) //如果当前时刻发生了变化，这个条件每 ms 都会成立一次
+		{
+			last_sys_tick = sys_tick;
+			if (sys_tick % 10 == 0) //通过 % 把频率从 1000hz 降低到 100hz，即每 10ms 发生一次
+			{
+				//初始化扫频配置
+				if (init_flag == 0)
+				{
+					init_my_sweep(&sweep, sys_tick, t_period_ms, f0, f1, Amp); 
+					printf("sweep-init:k=%.5f,p=%.5f\r\n",(float)sweep.k,(float)sweep.p);
+					init_flag = 1; 
+				}
+				//获取正弦扫频信号
+				sweep_input = (int16_t)run_my_sweep(&sweep, sys_tick);
+				//将正弦扫频信号输入到 ST MC SDK 的力矩控制 API 中
+				MC_ProgramTorqueRampMotor1(sweep_input,0);
+				//获取丝杆的转速信息，单位为 0.1h
+				sweep_output = MC_GetMecSpeedAverageMotor1();
+				//把时间，input, output 发送到 matlab
+				send_data_2_matlab(time,(float)sweep_input,(float)sweep_output); 
+			}
+		}
+	}
+}
+/*实现一个阶跃测试函数，放在 main 的 while(1)中进行阶跃测试*/ 
+void function_step_test(void)
+{
+	/*1.定义局部变量和静态变量*/
+	uint32_t sys_tick = 0; 
+	static uint32_t init_flag = 0; 
+	static uint32_t last_sys_tick = 0; 
+	static uint32_t start_sys_tick = 0;
+	static float start_time=-1.0f;
+	int16_t step_input = 0;
+	int16_t step_output = 0; 
+	
+	// 频率在 10s 内 ，从 0.5hz 变化到 10hz，幅度为 1500 digit current 
+	uint32_t t_period_ms = 10*1000; //10s
+	static float u_k;
+	static float u_k_1;
+	static float e_k;
+	static float e_k_1;
+	static float ref =0.0f;
+	static float Amp = 0.0f; 
+	static float start_pos = 0.0f; 
+	
+	float time = 0.0f; 
+	sys_tick = HAL_GetTick(); //获取当前时刻，单位 ms
+	time = 0.001f * sys_tick; //单位 s
+	
+	/*2.初始化你的控制器*/
+	if ((find_home_flag == 1) && (MC_GetSTMStateMotor1() == RUN))/*3.启动 step 测试功能条件满足*/
+	{
+		if (last_sys_tick != sys_tick)/*4.分频器确定当前 tick 为控制器运行的 tick*/
+		{
+			/*5.获取光栅尺的当前位置 fdk (mm)*/
+			//pos
+			last_sys_tick = sys_tick;
+			if (sys_tick % 10 == 0) //通过 % 把频率从 1000hz 降低到 100hz，即每 10ms 发生一次
+			{
+				//初始化扫频配置,
+				if (init_flag == 0)
+				{
+					/*6.指定阶跃的距离 Amp 统一定义为 20mm*/
+					Amp=20.0f/0.005f;
+					/*7.一次性计算当前参考值 ref = fdk+Amp*/
+					ref = pos-Amp;
+					u_k=0.0f;
+					u_k_1=0.0f;
+					e_k=0.0f;
+					e_k_1=0.0f;
+					start_time=time;
+					start_pos=pos;
+					init_flag = 1; 
+				}
+				else{
+					/*8.将 ref 作为你的位置控制器的输入命令，调用控制器*/
+					e_k_1=e_k;
+					e_k=(ref-pos)*0.005f;
+					u_k_1=u_k;
+					u_k=0.3333f*u_k_1+2167.0f*e_k-1167.0f*e_k_1;
+					//将正弦扫频信号输入到 ST MC SDK 的力矩控制 API 中
+					MC_ProgramTorqueRampMotor1(u_k,0);
+					//获取丝杆的转速信息，单位为 0.1h
+					step_output = MC_GetMecSpeedAverageMotor1();
+					/*9.使用 send_data_2_matlab, 把时间，ref, fdk 发送到 matlab 进行显示*/
+					float output=pos-start_pos<0?start_pos-pos:pos-start_pos;
+					send_data_2_matlab(time,(float)20.0,(float)output*0.005f); 
+//					send_data_2_matlab(time,(float)ref,pos); 
+					if(time-start_time>4)state++;
+				}
+				
+			}
+		}
+		else {
+		/*10. do some thing if need*/
+		}
+	}
+	else {
+	/*11. do some thing if need*/
+	}
+}
+
+/*实现一个sin函数*/ 
+void function_sin_test(void)
+{
+	/*1.定义局部变量和静态变量*/
+	uint32_t sys_tick = 0; 
+	static uint32_t init_flag = 0; 
+	static uint32_t last_sys_tick = 0; 
+	static uint32_t start_sys_tick = 0;
+	static float start_time=-1.0f;
+	int16_t step_input = 0;
+	int16_t step_output = 0; 
+	
+	// 频率在 10s 内 ，从 0.5hz 变化到 10hz，幅度为 1500 digit current 
+	uint32_t t_period_ms = 10*1000; //10s
+	static float u_k;
+	static float u_k_1;
+	static float e_k;
+	static float e_k_1;
+	static float ref =0.0f;
+	static float Amp = 0.0f; 
+	static float start_pos = 0.0f; 
+	
+	float time = 0.0f; 
+	sys_tick = HAL_GetTick(); //获取当前时刻，单位 ms
+	time = 0.001f * sys_tick; //单位 s
+	
+	/*2.初始化你的控制器*/
+	if ((find_home_flag == 1) && (MC_GetSTMStateMotor1() == RUN))/*3.启动 step 测试功能条件满足*/
+	{
+		if (last_sys_tick != sys_tick)/*4.分频器确定当前 tick 为控制器运行的 tick*/
+		{
+			/*5.获取光栅尺的当前位置 fdk (mm)*/
+			//pos
+			last_sys_tick = sys_tick;
+			if (sys_tick % 10 == 0) //通过 % 把频率从 1000hz 降低到 100hz，即每 10ms 发生一次
+			{
+				//初始化扫频配置,
+				if (init_flag == 0)
+				{
+					
+					u_k=0.0f;
+					u_k_1=0.0f;
+					e_k=0.0f;
+					e_k_1=0.0f;
+					start_time=time;
+					start_pos=pos;
+					init_flag = 1; 
+				}
+				else{
+					/*6.指定阶跃的距离 Amp 统一定义为 20mm*/
+					Amp=20.0*sin(2*PI*(time-start_time))/0.005f;
+					/*7.一次性计算当前参考值 ref = fdk+Amp*/
+					ref = start_pos-Amp;
+					/*8.将 ref 作为你的位置控制器的输入命令，调用控制器*/
+					e_k_1=e_k;
+					e_k=(ref-pos)*0.005f;
+					u_k_1=u_k;
+					u_k=0.3333f*u_k_1+2167.0f*e_k-1167.0f*e_k_1;
+					//将正弦扫频信号输入到 ST MC SDK 的力矩控制 API 中
+					MC_ProgramTorqueRampMotor1(u_k,0);
+					//获取丝杆的转速信息，单位为 0.1h
+					step_output = MC_GetMecSpeedAverageMotor1();
+					/*9.使用 send_data_2_matlab, 把时间，ref, fdk 发送到 matlab 进行显示*/
+					float output=pos-start_pos;
+					send_data_2_matlab(time,(float)(-Amp)*0.005f,(float)output*0.005f); 
+//					send_data_2_matlab(time,(float)ref,pos); 
+					if(time-start_time>4)state++;
+				}
+				
+			}
+		}
+		else {
+		/*10. do some thing if need*/
+		}
+	}
+	else {
+	/*11. do some thing if need*/
+	}
+}
+/*实现一个扫频测试函数，放在 main 的 while(1)中进行扫频跟随测试，验证 w 位置闭环带宽*/ 
+//void function_sweep_test(void)
+//{
+//	/*1.定义局部变量和静态变量*/
+//	/*2.初始化你的控制器*/
+//	/*3.初始化你的正弦信号发生器为 幅值 20mm, 频率在 10s 内从 1hz 变化到 2hz*/
+//	if (/*4.启动扫频测试功能条件满足*/)
+//	{
+//		if (/*5.分频器确定当前 tick 为控制器运行的 tick*/)
+//		{
+//			/*6.获取光栅尺的当前位置 fdk (mm)*/
+//			/*7.每个 tick 都获取最新的扫频信号输出，作为当前参考值 ref = sweep(now)*/
+//			/*8.将 ref 作为你的位置控制器的输入命令，调用控制器*/
+//			/*9.使用 send_data_2_matlab, 把时间，ref, fdk 发送到 matlab 进行显示*/
+//		}
+//		else {
+//		/*10. do some thing if need*/
+//		}
+//	}
+//	else {
+//	/*11. do some thing if need*/
+//	}
+//}
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -165,7 +394,8 @@ int main(void)
 		}
 		pos=cnter+base;
 		old_cnter=cnter;
-		printf("%f\r\n",(pos-mid)*0.005);
+//		if(state<=5)
+//		printf("%f\r\n",(pos-mid)*0.005);
 //		printf("%ld\r\n",cnter);
 		
 		switch(state){
@@ -174,7 +404,7 @@ int main(void)
 				break;
 			}
 			case 2:{
-				MC_ProgramSpeedRampMotor1(-20,500);
+				MC_ProgramSpeedRampMotor1(-40,500);
 				MC_StartMotor1();
 				state++;
 				break;
@@ -183,7 +413,7 @@ int main(void)
 				if(HAL_GPIO_ReadPin(LIM_N_GPIO_Port,LIM_N_Pin)==RESET){
 					state++;
 					start=pos;
-					MC_ProgramSpeedRampMotor1(20,500);
+					MC_ProgramSpeedRampMotor1(40,500);
 					MC_StartMotor1();
 					
 				}
@@ -195,14 +425,14 @@ int main(void)
 					state++;
 					end=pos;
 					mid=start/2+end/2;
-					MC_ProgramSpeedRampMotor1(-20,500);
+					MC_ProgramSpeedRampMotor1(-40,500);
 					MC_StartMotor1();
 				}
 				else;
 				break;
 			}
 			case 5:{
-				if(abs(pos-mid)<5){
+				if((pos-mid)<5&(mid-pos)<5){
 					state++;
 					MC_ProgramSpeedRampMotor1(0,0);
 					MC_StartMotor1();
@@ -211,7 +441,12 @@ int main(void)
 				break;
 			}
 			case 6:{
-				
+				function_step_test();
+//				function_sin_test();
+				break;
+			}
+			case 7:{
+				MC_StopMotor1();
 				break;
 			}
 		}

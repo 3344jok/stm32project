@@ -13,6 +13,7 @@
 "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\user_interface.o"
 "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\stm32f4xx_it.o"
 "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\stm32f4xx_hal_msp.o"
+"ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\sweep.o"
 "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\stm32f4xx_hal_adc.o"
 "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\stm32f4xx_hal_adc_ex.o"
 "ysf4_hal_motor-654. foc_v5.2.0_42pmsm_ecoder\stm32f4xx_hal_rcc.o"
